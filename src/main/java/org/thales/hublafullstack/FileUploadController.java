@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thales.hublafullstack.domain.transaction.Transaction;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,22 +32,22 @@ public class FileUploadController {
 //    }
 
     @PutMapping("/")
-    public void get(@RequestParam("file") MultipartFile file) throws IOException {
+    public void get(@RequestParam("file") MultipartFile file) throws Exception {
         String content = new String(file.getBytes(), StandardCharsets.UTF_8).trim();
 
         String[] rows = content.split("\n");
 
-        ArrayList<Transacao> transacoes = new ArrayList<>();
+        ArrayList<Transaction> transacoes = new ArrayList<>();
 
         for (String row :
                 rows) {
-            transacoes.add(Transacao.of(row));
+            transacoes.add(Transaction.of(row));
         }
 
         transacoes.stream().collect(
-                Collectors.groupingBy(Transacao::produto,
-                        Collectors.groupingBy(Transacao::vendedor,
-                                Collectors.groupingBy(Transacao::tipo)
+                Collectors.groupingBy(transaction -> transaction.getProduct().getValue(),
+                        Collectors.groupingBy(transaction -> transaction.getSeller().getValue(),
+                                Collectors.groupingBy(transaction -> transaction.getTransactionType().getType())
                         )
                 )
         );
