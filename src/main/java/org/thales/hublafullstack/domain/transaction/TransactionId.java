@@ -34,8 +34,8 @@ public class TransactionId extends Identifier {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    TransactionId userID = (TransactionId) o;
-    return getValue().equals(userID.getValue());
+    TransactionId transactionId = (TransactionId) o;
+    return getValue().equals(transactionId.getValue());
   }
 
   @Override

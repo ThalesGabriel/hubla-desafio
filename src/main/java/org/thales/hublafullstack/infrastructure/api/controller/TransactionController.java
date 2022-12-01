@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.thales.hublafullstack.infrastructure.api.TransactionApi;
 import org.thales.hublafullstack.infrastructure.api.pagination.SearchQuery;
 import org.thales.hublafullstack.infrastructure.api.service.TransactionService;
-import org.thales.hublafullstack.infrastructure.gateway.TransactionJpaEntity;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -36,7 +35,7 @@ public class TransactionController implements TransactionApi {
 
 
 //  @Override
-  public Map<Object, Map<Object, Map<Object, List<TransactionJpaEntity>>>> listTransactions(int page, int perPage) {
+  public List<Map> listTransactions(int page, int perPage) {
     return service.listTransactions(new SearchQuery(page, perPage));
   }
 

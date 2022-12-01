@@ -1,23 +1,31 @@
 package org.thales.hublafullstack.infrastructure.api.service;
 
-import org.springframework.stereotype.Service;
+import org.thales.hublafullstack.domain.product.Product;
+import org.thales.hublafullstack.domain.seller.Seller;
 import org.thales.hublafullstack.domain.transaction.Transaction;
-import org.thales.hublafullstack.infrastructure.api.pagination.Pagination;
 import org.thales.hublafullstack.infrastructure.api.pagination.SearchQuery;
-import org.thales.hublafullstack.infrastructure.gateway.TransactionJpaEntity;
-import org.thales.hublafullstack.infrastructure.gateway.TransactionSqlGateway;
+import org.thales.hublafullstack.infrastructure.gateway.product.ProductSqlGateway;
+import org.thales.hublafullstack.infrastructure.gateway.seller.SellerSqlGateway;
+import org.thales.hublafullstack.infrastructure.gateway.transaction.Novo;
+import org.thales.hublafullstack.infrastructure.gateway.transaction.TransactionJpaEntity;
+import org.thales.hublafullstack.infrastructure.gateway.transaction.TransactionSqlGateway;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TransactionService {
 
-    private TransactionSqlGateway gateway;
+    private final TransactionSqlGateway gateway;
+    private final ProductSqlGateway productSqlGateway;
+    private final SellerSqlGateway sellerSqlGateway;
 
-    public TransactionService(TransactionSqlGateway gateway) {
+    public TransactionService(TransactionSqlGateway gateway, ProductSqlGateway productSqlGateway, SellerSqlGateway sellerSqlGateway) {
         this.gateway = gateway;
+        this.productSqlGateway = productSqlGateway;
+        this.sellerSqlGateway = sellerSqlGateway;
     }
 
     public void create(String[] rows) throws Exception {
@@ -27,17 +35,18 @@ public class TransactionService {
             transacoes.add(Transaction.of(row));
         }
 
-        gateway.save(transacoes);
+        for (Transaction transaction :
+                transacoes) {
+            final var product = productSqlGateway.save((Product) transaction.getProduct());
+            final var seller = sellerSqlGateway.save((Seller) transaction.getSeller());
+            gateway.save(TransactionJpaEntity.of(transaction, product, seller));
+        }
 
     }
 
-    public Map<Object, Map<Object, Map<Object, List<TransactionJpaEntity>>>> listTransactions(SearchQuery searchQuery) {
-        var pagination = gateway.findAll(searchQuery);
-        return pagination.items().stream().collect(
-                Collectors.groupingBy(transaction -> transaction.getProduct(),
-                        Collectors.groupingBy(transaction -> transaction.getSeller(),
-                                Collectors.groupingBy(transaction -> transaction.getType())
-                        )
+    public List<Map> listTransactions(SearchQuery searchQuery) {
+        return (List<Map>) gateway.findAll().stream().collect(
+                Collectors.groupingBy(map -> map.get("product")
                 )
         );
     }

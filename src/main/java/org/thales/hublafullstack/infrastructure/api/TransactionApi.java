@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.thales.hublafullstack.infrastructure.gateway.TransactionJpaEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -37,7 +36,7 @@ public interface TransactionApi {
           @ApiResponse(responseCode = "422", description = "A invalid parameter was received"),
           @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
   })
-  Map<Object, Map<Object, Map<Object, List<TransactionJpaEntity>>>> listTransactions(
+  List<Map> listTransactions(
           @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
           @RequestParam(name = "perPage", required = false, defaultValue = "10") final int perPage
   );

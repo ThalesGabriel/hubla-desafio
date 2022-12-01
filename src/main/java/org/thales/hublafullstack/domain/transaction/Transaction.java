@@ -1,12 +1,10 @@
 package org.thales.hublafullstack.domain.transaction;
 
 import org.thales.hublafullstack.domain.Aggregate;
-import org.thales.hublafullstack.domain.transaction.product.IProduct;
-import org.thales.hublafullstack.domain.transaction.product.Product;
-import org.thales.hublafullstack.domain.transaction.product.ProductValidator;
-import org.thales.hublafullstack.domain.transaction.seller.ISeller;
-import org.thales.hublafullstack.domain.transaction.seller.Seller;
-import org.thales.hublafullstack.domain.transaction.seller.SellerValidator;
+import org.thales.hublafullstack.domain.product.IProduct;
+import org.thales.hublafullstack.domain.product.Product;
+import org.thales.hublafullstack.domain.seller.ISeller;
+import org.thales.hublafullstack.domain.seller.Seller;
 import org.thales.hublafullstack.domain.transaction.type.TransactionType;
 import org.thales.hublafullstack.shared.notification.Notification;
 
@@ -35,8 +33,8 @@ public class Transaction extends Aggregate<TransactionId> {
             String type = row.trim().substring(0, 1);
             String date = row.trim().substring(1, 26);
             String product_name = row.trim().substring(26, 56).trim();
-            String price = row.trim().substring(56, 66);
             String seller = row.trim().substring(66, row.length());
+            String price = row.trim().substring(56, 66);
             return new Transaction(TransactionType.getByType(Integer.parseInt(type)), Instant.parse(date), Product.of(product_name), Integer.parseInt(price), Seller.of(seller));
         } catch (Exception e) {
             throw new Exception("Erro na criação");
@@ -45,7 +43,7 @@ public class Transaction extends Aggregate<TransactionId> {
 
     @Override
     public void validate() {
-        new TransactionValidator(new ProductValidator(), new SellerValidator()).validate(this);
+        new TransactionValidator().validate(this);
     }
 
     public TransactionType getTransactionType() {
