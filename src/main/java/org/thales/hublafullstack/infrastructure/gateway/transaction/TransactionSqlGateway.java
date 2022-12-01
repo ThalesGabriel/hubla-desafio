@@ -1,10 +1,9 @@
 package org.thales.hublafullstack.infrastructure.gateway.transaction;
 
 import org.springframework.stereotype.Component;
-import org.thales.hublafullstack.infrastructure.api.pagination.SearchQuery;
+import org.thales.hublafullstack.infrastructure.gateway.transaction.output.TransactionOutput;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class TransactionSqlGateway {
@@ -19,9 +18,8 @@ public class TransactionSqlGateway {
     this.transactionRepository.saveAndFlush(transaction);
   }
 
-  public List<Map> findAll() {
-
-    return this.transactionRepository.findAllTickersByUser("");
+  public List<TransactionOutput> findAll() {
+    return this.transactionRepository.findAllGroupedTransactions("");
   }
 
 }

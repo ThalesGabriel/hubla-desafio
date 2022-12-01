@@ -3,17 +3,14 @@ package org.thales.hublafullstack.infrastructure.api.service;
 import org.thales.hublafullstack.domain.product.Product;
 import org.thales.hublafullstack.domain.seller.Seller;
 import org.thales.hublafullstack.domain.transaction.Transaction;
-import org.thales.hublafullstack.infrastructure.api.pagination.SearchQuery;
 import org.thales.hublafullstack.infrastructure.gateway.product.ProductSqlGateway;
 import org.thales.hublafullstack.infrastructure.gateway.seller.SellerSqlGateway;
-import org.thales.hublafullstack.infrastructure.gateway.transaction.Novo;
 import org.thales.hublafullstack.infrastructure.gateway.transaction.TransactionJpaEntity;
 import org.thales.hublafullstack.infrastructure.gateway.transaction.TransactionSqlGateway;
+import org.thales.hublafullstack.infrastructure.gateway.transaction.output.TransactionOutput;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TransactionService {
@@ -44,10 +41,9 @@ public class TransactionService {
 
     }
 
-    public List<Map> listTransactions(SearchQuery searchQuery) {
-        return (List<Map>) gateway.findAll().stream().collect(
-                Collectors.groupingBy(map -> map.get("product")
-                )
+    public List<TransactionOutput> listTransactions() {
+        return (List<TransactionOutput>) gateway.findAll().stream().collect(
+                Collectors.groupingBy(TransactionOutput::getProduct)
         );
     }
 }
