@@ -1,8 +1,10 @@
 package org.thales.hublafullstack.domain.transaction;
 
 import org.thales.hublafullstack.domain.Aggregate;
+import org.thales.hublafullstack.domain.transaction.product.IProduct;
 import org.thales.hublafullstack.domain.transaction.product.Product;
 import org.thales.hublafullstack.domain.transaction.product.ProductValidator;
+import org.thales.hublafullstack.domain.transaction.seller.ISeller;
 import org.thales.hublafullstack.domain.transaction.seller.Seller;
 import org.thales.hublafullstack.domain.transaction.seller.SellerValidator;
 import org.thales.hublafullstack.domain.transaction.type.TransactionType;
@@ -14,11 +16,11 @@ public class Transaction extends Aggregate<TransactionId> {
 
     private TransactionType transactionType;
     private Instant createdAt;
-    private Product product;
-    private Seller seller;
+    private IProduct product;
+    private ISeller seller;
     private Integer price;
 
-    private Transaction(TransactionType transactionType, Instant createdAt, Product iProduct, Integer price, Seller iSeller) {
+    private Transaction(TransactionType transactionType, Instant createdAt, IProduct iProduct, Integer price, ISeller iSeller) {
         super(TransactionId.unique());
         this.transactionType = transactionType;
         this.createdAt = createdAt;
@@ -46,14 +48,6 @@ public class Transaction extends Aggregate<TransactionId> {
         new TransactionValidator(new ProductValidator(), new SellerValidator()).validate(this);
     }
 
-    public void validateProduct() {
-//        this.cpf = Cpf.format(this.cpf.getValue());
-    }
-
-    public void validateSeller() {
-//        this.cpf = Cpf.format(this.cpf.getValue());
-    }
-
     public TransactionType getTransactionType() {
         return transactionType;
     }
@@ -62,7 +56,7 @@ public class Transaction extends Aggregate<TransactionId> {
         return createdAt;
     }
 
-    public Product getProduct() {
+    public IProduct getProduct() {
         return product;
     }
 
@@ -70,7 +64,7 @@ public class Transaction extends Aggregate<TransactionId> {
         return price;
     }
 
-    public Seller getSeller() {
+    public ISeller getSeller() {
         return seller;
     }
 }

@@ -4,6 +4,6 @@ import org.thales.hublafullstack.shared.notification.INotification;
 
 public interface ISellerValidator {
 
-  public abstract void validate(Seller seller, INotification notification);
+  public abstract void validate(ISeller seller, INotification notification);
 
 }

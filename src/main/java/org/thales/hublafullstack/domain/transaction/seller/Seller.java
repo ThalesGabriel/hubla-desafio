@@ -1,8 +1,6 @@
 package org.thales.hublafullstack.domain.transaction.seller;
 
-import org.thales.hublafullstack.domain.transaction.product.Product;
-
-public class Seller {
+public class Seller implements ISeller{
 
     private final String value;
 

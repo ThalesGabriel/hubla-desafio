@@ -1,0 +1,10 @@
+CREATE SCHEMA IF NOT EXISTS desafio;
+
+CREATE TABLE IF NOT EXISTS `transaction`(
+    id VARCHAR(36) NOT NULL PRIMARY KEY,
+    product CHAR(30) NOT NULL,
+    seller VARCHAR(20) NOT NULL,
+    type INTEGER NOT NULL,
+    price INTEGER NOT NULL,
+    created_at DATETIME(6) NOT NULL
+);

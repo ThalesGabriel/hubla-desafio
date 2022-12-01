@@ -2,7 +2,7 @@ package org.thales.hublafullstack.domain.transaction.product;
 
 import org.thales.hublafullstack.domain.ValueObject;
 
-public class Product extends ValueObject {
+public class Product extends ValueObject implements IProduct {
 
     private final String value;
 

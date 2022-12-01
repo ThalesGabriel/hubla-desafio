@@ -5,7 +5,7 @@ import org.thales.hublafullstack.shared.notification.INotification;
 public class ProductValidator implements IProductValidator {
 
   @Override
-  public void validate(Product product, INotification notification) {
+  public void validate(IProduct product, INotification notification) {
     String productName = product.getValue();
 
     if (productName == null) {
